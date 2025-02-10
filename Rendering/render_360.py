@@ -4,6 +4,8 @@ import imageio
 import torch
 from pathlib import Path
 import click
+import numpy as np
+from tqdm.auto import tqdm
 
 
 def render_360(
@@ -16,7 +18,7 @@ def render_360(
     elev: float = 0,
     azim: float = 0,
     distance: float = 2.732,
-    output_path: str = "360.mp4",
+    output_path: str = "360.gif",
     resolution: int = 512,
     verbose: bool = False,
 ) -> Path:
@@ -25,7 +27,7 @@ def render_360(
     specified FPS and duration.
 
     Returns:
-        path to the output gif file
+        output_path (Path): Path to the saved gif.
     """
 
     if device is None:
@@ -62,7 +64,10 @@ def render_360(
 
     # Render the mesh
     images = []
-    for i in range(0, 360, 360 // (fps * duration)):
+    pbar = tqdm(
+        range(0, 360, 360 // (fps * duration)), desc="Rendering", disable=not verbose
+    )
+    for i in pbar:
         R, T = pytorch3d.renderer.cameras.look_at_view_transform(
             distance, elev, azim + i
         )
@@ -77,26 +82,29 @@ def render_360(
             cameras=cameras,
             lights=lights,
         )
-        images.append(rendered_image[0, ..., :3].cpu().numpy())
+        img_ = rendered_image[0, ..., :3].cpu().numpy()
+        img_ = (img_ * 255).astype(np.uint8)
 
-    # Save the images as a gif
-    imageio.mimsave(output_path, images, fps=fps)
+        images.append(img_)
 
-    return Path(output_path)
+    # Save the gif
+    imageio.mimsave(output_path, images, duration=1000 / fps, loop=0)
+
+    return output_path
 
 
 @click.command()
 @click.option("--mesh_path", type=str, required=True)
 @click.option("--output_path", type=str, required=False, default="")
-def main(mesh_path, output_path):
+@click.option("--verbose", is_flag=True)
+def main(mesh_path: str, output_path: str, verbose: bool):
     mesh_path = Path(mesh_path)
-    output_path = Path(output_path)
     vertices, faces = load_external_mesh(mesh_path)
     vertices = vertices.unsqueeze(0)
     faces = faces.unsqueeze(0)
     textures = torch.ones_like(vertices)
-    output_path = output_path if output_path != "" else Path("360.mp4")
-    render_360(vertices, faces, textures, output_path=output_path)
+    output_path = output_path if output_path != "" else "360.gif"
+    render_360(vertices, faces, textures, output_path=output_path, verbose=verbose)
 
 
 if __name__ == "__main__":
