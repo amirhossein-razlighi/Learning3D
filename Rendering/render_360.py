@@ -103,7 +103,7 @@ def main(mesh_path: str, output_path: str, verbose: bool):
     vertices = vertices.unsqueeze(0)
     faces = faces.unsqueeze(0)
     textures = torch.ones_like(vertices)
-    output_path = output_path if output_path != "" else "360.gif"
+    output_path = output_path if output_path != "" else "cow_obj_360_rendered.gif"
     render_360(vertices, faces, textures, output_path=output_path, verbose=verbose)
 
 
