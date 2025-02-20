@@ -8,6 +8,12 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    # Add these permissions
+    permissions:
+      contents: write      # Required for pushing to gh-pages
+      pages: write        # Required for deploying GitHub Pages
+      id-token: write     # Required for authentication
+      
     steps:
     - uses: actions/checkout@v4
 
@@ -25,12 +31,16 @@ jobs:
       run: |
         cd docs
         make html
-        # Create .nojekyll file to bypass Jekyll processing
         touch build/html/.nojekyll
 
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        folder: docs/build/html
-        branch: gh-pages
-        clean: true
+        path: 'docs/build/html'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
