@@ -1,6 +1,6 @@
 import torch
 import pytorch3d.structures
-
+from torch3dr.Rendering import get_device
 
 def create_tetrahedron(device=None):
     """
@@ -15,7 +15,7 @@ def create_tetrahedron(device=None):
         pytorch3d.structures.Meshes: Tetrahedron mesh
     """
     if device is None:
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = get_device()
 
     # Calculate vertices
     # We'll use a regular tetrahedron where all faces are equilateral triangles
