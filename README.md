@@ -1,2 +1,2 @@
-# Learning3D
-A repository with in-depth wikis to learn fundamentals and concepts of 3D vision
+# Torch3DR
+`Torch3DR` stands for __Torch 3D Research__. This library is aimed to provide you with a set of classes, functions and visualizers (all compatible with `PyTorch`) to help you with your 3D research projects. The library is still under development and is not yet ready for production. However, you can already use it for your research projects.
