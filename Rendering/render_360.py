@@ -71,12 +71,10 @@ def render_360(
         R, T = pytorch3d.renderer.cameras.look_at_view_transform(
             distance, elev, azim + i
         )
-        cameras = pytorch3d.renderer.FoVPerspectiveCameras(
-            R=R,
-            T=T,
-            fov=60,
-            device=device,
-        )
+        # Update the camera position and Rotation
+        cameras.R = R.to(device)
+        cameras.T = T.to(device)
+
         rendered_image = renderer(
             mesh,
             cameras=cameras,
