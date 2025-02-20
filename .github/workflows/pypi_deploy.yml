@@ -3,14 +3,17 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: read
     steps:
     - uses: actions/checkout@v4
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -25,8 +28,6 @@ jobs:
       run: python -m build
     
     - name: Publish to PyPI
-      env:
-        TWINE_USERNAME: arazlighi
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: |
-        twine upload dist/*
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
