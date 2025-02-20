@@ -6,12 +6,13 @@ from pathlib import Path
 import click
 import numpy as np
 from tqdm.auto import tqdm
+from typing import Union, Tuple
 
 
 def render_360(
     vertices,
     faces,
-    textures_tensor,
+    textures_tensor: Union[torch.Tensor, pytorch3d.renderer.TexturesVertex],
     device: torch.device = None,
     fps: int = 10,
     duration: int = 3,
@@ -37,8 +38,12 @@ def render_360(
     faces = faces.to(device)
     textures_tensor = textures_tensor.to(device)
 
-    textures = pytorch3d.renderer.TexturesVertex(
-        verts_features=textures_tensor,
+    textures = (
+        pytorch3d.renderer.TexturesVertex(
+            verts_features=textures_tensor,
+        )
+        if isinstance(textures_tensor, torch.Tensor)
+        else textures_tensor
     )
 
     # Initialize the renderer
