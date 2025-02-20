@@ -30,8 +30,8 @@ jobs:
         touch build/html/.nojekyll
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/build/html
-        force_orphan: true
+        folder: docs/build/html
+        branch: gh-pages
+        clean: true
