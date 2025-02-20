@@ -173,3 +173,5 @@ cython_debug/
 Data/
 .DS_Store
 outputs/
+
+visualize_test.py

@@ -2,6 +2,7 @@ import torch
 import pytorch3d.structures
 from torch3dr.Rendering import get_device
 
+
 def create_tetrahedron(device=None):
     """
     Create a tetrahedron mesh.
@@ -67,6 +68,71 @@ def create_tetrahedron(device=None):
 
     # Create mesh with default white color
     textures = torch.zeros_like(vertices)  # (1, 4, 3)
+
+    mesh = pytorch3d.structures.Meshes(
+        verts=vertices,
+        faces=faces,
+        textures=pytorch3d.renderer.TexturesVertex(textures),
+    )
+
+    return mesh
+
+
+def create_cube(size=1.0, device=None):
+    """
+    Create a cube mesh centered at origin.
+
+    Args:
+        size (float): Length of cube edges. Defaults to 1.0.
+        device (torch.device): Device to place the mesh on.
+            Defaults to None (uses get_device()).
+
+    Returns:
+        pytorch3d.structures.Meshes: Cube mesh
+    """
+    if device is None:
+        device = get_device()
+
+    # Define vertices (8 corners of the cube)
+    vertices = torch.tensor(
+        [
+            [-1, -1, -1],  # 0: left  bottom back
+            [1, -1, -1],  # 1: right bottom back
+            [1, 1, -1],  # 2: right top    back
+            [-1, 1, -1],  # 3: left  top    back
+            [-1, -1, 1],  # 4: left  bottom front
+            [1, -1, 1],  # 5: right bottom front
+            [1, 1, 1],  # 6: right top    front
+            [-1, 1, 1],  # 7: left  top    front
+        ],
+        device=device,
+    ) * (size / 2)
+
+    # Define faces (12 triangles forming 6 square faces)
+    faces = torch.tensor(
+        [
+            [0, 1, 2],  # back face
+            [0, 2, 3],
+            [4, 6, 5],  # front face
+            [4, 7, 6],
+            [0, 4, 5],  # bottom face
+            [0, 5, 1],
+            [2, 6, 7],  # top face
+            [2, 7, 3],
+            [0, 3, 7],  # left face
+            [0, 7, 4],
+            [1, 5, 6],  # right face
+            [1, 6, 2],
+        ],
+        device=device,
+    )
+
+    # Add batch dimension
+    vertices = vertices.unsqueeze(0)  # (1, 8, 3)
+    faces = faces.unsqueeze(0)  # (1, 12, 3)
+
+    # Create white textures
+    textures = torch.zeros_like(vertices)  # (1, 8, 3)
 
     mesh = pytorch3d.structures.Meshes(
         verts=vertices,
