@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 from tqdm.auto import tqdm
 import click
 
-from rendering_utils import get_device, get_mesh_renderer
+from .rendering_utils import get_device, get_mesh_renderer
 
 
 @click.command()

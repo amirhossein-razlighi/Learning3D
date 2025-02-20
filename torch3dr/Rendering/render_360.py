@@ -1,4 +1,4 @@
-from rendering_utils import *
+from .rendering_utils import *
 import pytorch3d
 import imageio
 import torch
