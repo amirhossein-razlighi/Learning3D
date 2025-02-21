@@ -9,7 +9,6 @@ from pytorch3d.renderer import (
     AlphaCompositor,
     HardPhongShader,
 )
-from pytorch3d.io import load_obj
 from typing import Tuple
 from pathlib import Path
 
@@ -21,17 +20,11 @@ def get_device():
     device = torch.device(
         "cuda"
         if torch.cuda.is_available()
-        # else "mps" if torch.backends.mps.is_available() 
+        # else "mps" if torch.backends.mps.is_available()
         else "cpu"
     )
 
     return device
-
-
-def load_external_mesh(mesh_path: Path):
-    vertices, faces, _ = load_obj(mesh_path)
-    faces = faces.verts_idx
-    return vertices, faces
 
 
 def get_pointcloud_renderer(
