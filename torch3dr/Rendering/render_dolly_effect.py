@@ -9,18 +9,6 @@ import click
 from .rendering_utils import get_device, get_mesh_renderer
 
 
-@click.command()
-@click.option("--image_size", default=256, help="size of output (rendered) image")
-@click.option("--num_frames", default=10, help="number of frames in the output gif")
-@click.option(
-    "--duration", default=3, help="The duration of the final gif (in seconds)"
-)
-@click.option("--device", default=None, help="The device to use")
-@click.option(
-    "--output_file", default="output/dolly.gif", help="The output file to save the gif"
-)
-@click.option("--input_file", required=True, help="The input file to load the mesh")
-@click.option("--dolly_in", is_flag=True, help="Whether to dolly in or out")
 def dolly_zoom(
     input_file,
     image_size=256,
@@ -71,7 +59,3 @@ def dolly_zoom(
         images.append(np.array(image))
 
     imageio.mimsave(output_file, images, duration=duration, loop=0)
-
-
-if __name__ == "__main__":
-    dolly_zoom()
