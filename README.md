@@ -22,3 +22,10 @@ git clone https://github.com/amirhossein-razlighi/Torch3DR.git
 cd Torch3DR
 pip install -e .
 ```
+
+### For Development
+```bash
+# Use the install_requirements.sh
+sudo sh install_requirements.sh
+```
+This will install all the required dependencies and then, installs PyTorch3D from source.
