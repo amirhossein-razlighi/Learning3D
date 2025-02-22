@@ -2,16 +2,21 @@ from pathlib import Path
 from typing import Tuple, Optional, Union
 
 import torch
+import pytorch3d
 from pytorch3d.io import load_obj, load_ply, load_objs_as_meshes
 
 from torch3dr.utils import get_device
+
 
 def load_obj_mesh(
     mesh_path: Path,
     return_aux: bool = False,
     return_type: str = "pt",
     device: str = None,
-) -> Union[Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]], pytorch3d.structures.meshes.Meshes]:
+) -> Union[
+    Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]],
+    pytorch3d.structures.meshes.Meshes,
+]:
     """
     Loads a mesh from an .obj file.
     Args:
@@ -31,9 +36,9 @@ def load_obj_mesh(
     if return_type not in ["pt", "mesh"]:
         raise ValueError(f"Unsupported return type: {return_type}")
     if device is None:
-        device = 
+        device = get_device()
     if return_type == "mesh":
-        mesh = load_objs_as_meshes([mesh_path], device="cpu")
+        mesh = load_objs_as_meshes([mesh_path], device=device)
         return mesh
 
     verts, faces, aux = load_obj(mesh_path)

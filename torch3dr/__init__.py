@@ -1,4 +1,6 @@
 __version__ = "0.0.1"
 
-from .Mesh import *
-from .Rendering import *
+from .mesh import *
+from .rendering import *
+from .io import *
+from .utils import *
