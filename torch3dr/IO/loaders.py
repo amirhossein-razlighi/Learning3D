@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Union
 
 import torch
 from pytorch3d.io import load_obj, load_ply, load_objs_as_meshes
@@ -11,7 +11,7 @@ def load_obj_mesh(
     return_aux: bool = False,
     return_type: str = "pt",
     device: str = None,
-) -> Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]]:
+) -> Union[Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]], pytorch3d.structures.meshes.Meshes]:
     """
     Loads a mesh from an .obj file.
     Args:
