@@ -12,19 +12,7 @@ from pytorch3d.renderer import (
 from typing import Tuple
 from pathlib import Path
 
-
-def get_device():
-    """
-    Checks if GPU is available and returns the device accordingly
-    """
-    device = torch.device(
-        "cuda"
-        if torch.cuda.is_available()
-        # else "mps" if torch.backends.mps.is_available()
-        else "cpu"
-    )
-
-    return device
+from torch3dr.utils import get_device
 
 
 def get_pointcloud_renderer(

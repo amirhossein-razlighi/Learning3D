@@ -6,7 +6,8 @@ from PIL import Image, ImageDraw
 from tqdm.auto import tqdm
 import click
 
-from .rendering_utils import get_device, get_mesh_renderer
+from torch3dr.rendering_utils import get_mesh_renderer
+from torch3dr.utils import get_device
 
 
 def dolly_zoom(

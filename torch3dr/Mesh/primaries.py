@@ -1,6 +1,6 @@
 import torch
 import pytorch3d.structures
-from torch3dr.Rendering import get_device
+from torch3dr.utils import get_device
 
 
 def create_tetrahedron(device=None):

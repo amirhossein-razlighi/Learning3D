@@ -1,5 +1,5 @@
 import click
-from torch3dr.Rendering import dolly_zoom
+from torch3dr.rendering import dolly_zoom
 
 
 @click.command()

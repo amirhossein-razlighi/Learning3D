@@ -1,22 +1,41 @@
 from pathlib import Path
 from typing import Tuple, Optional
-import torch
-from pytorch3d.io import load_obj, load_ply
 
+import torch
+from pytorch3d.io import load_obj, load_ply, load_objs_as_meshes
+
+from torch3dr.utils import get_device
 
 def load_obj_mesh(
-    mesh_path: Path, return_aux: bool = False
+    mesh_path: Path,
+    return_aux: bool = False,
+    return_type: str = "pt",
+    device: str = None,
 ) -> Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]]:
     """
     Loads a mesh from an .obj file.
     Args:
         mesh_path (Path): path to the .obj file
         return_aux (bool): whether to return auxiliary information such as normals and textures
+        return_type (str): return type of the vertices and faces. Can be either "pt" or "mesh". "pt"
+            return pytorch tensors as tuple, and "mesh" returns a Pytorch3D Meshes object.
     Returns:
+        (if return_type == "pt")
         vertices (Tensor): vertices of the mesh
         faces (Tensor): faces of the mesh
         aux (Tensor): auxiliary information such as normals, textures
+
+        (if return_type == "mesh")
+        mesh (Meshes): Pytorch3D Meshes object
     """
+    if return_type not in ["pt", "mesh"]:
+        raise ValueError(f"Unsupported return type: {return_type}")
+    if device is None:
+        device = 
+    if return_type == "mesh":
+        mesh = load_objs_as_meshes([mesh_path], device="cpu")
+        return mesh
+
     verts, faces, aux = load_obj(mesh_path)
     return verts, faces.verts_idx, aux if return_aux else None
 

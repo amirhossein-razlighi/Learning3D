@@ -1,8 +1,8 @@
 import click
 from pathlib import Path
 import torch
-from torch3dr.IO import load_external_mesh
-from torch3dr.Rendering import render_360
+from torch3dr.io import load_external_mesh
+from torch3dr.rendering import render_360
 
 
 @click.command()

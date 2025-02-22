@@ -1,5 +1,6 @@
-from torch3dr.Rendering.rendering_utils import *
-from torch3dr.IO import load_external_mesh
+from torch3dr.rendering.rendering_utils import *
+from torch3dr.io import load_external_mesh
+from torch3dr.utils import *
 import torch
 import numpy as np
 import unittest
